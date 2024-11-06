@@ -1,17 +1,15 @@
 "use client"
 import React from "react";
-import html2canvas from "html2canvas";
 import Title from "@/components/titleComponent/titleComponent";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaCartPlus, FaMinus, FaPlus } from "react-icons/fa";
-import { FaArrowLeft, FaPlugCirclePlus, FaX } from "react-icons/fa6";
+import { FaX } from "react-icons/fa6";
 import { getCookie } from "@/utils/cookie";
 import { IsAuth } from "@/utils/isAuth";
-import { getPrinterServices, requestDevice, printDocument } from "@/utils/bluetooth";
+import { getPrinterServices, } from "@/utils/bluetooth";
 import { useRouter } from "next/navigation";
 import EscPosEncoder from 'esc-pos-encoder';
 
