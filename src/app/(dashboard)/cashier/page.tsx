@@ -15,7 +15,7 @@ import EscPosEncoder from 'esc-pos-encoder';
 
 
 
-const Page = ()=>{
+const page = ()=>{
     const [Products,setProduct] = useState([]);
     const [Category,setCategory] = useState([]);
     const [Total,setTotal] = useState(0);
@@ -476,7 +476,7 @@ const Page = ()=>{
         }
 
         
-    },[fetchData])
+    },[])
 
     const sortedOrders = Carts.sort((a:any, b:any) => b.id - a.id);
 
@@ -585,4 +585,4 @@ const Page = ()=>{
         </div>
     )
 }
-export default Page;
+export default page;

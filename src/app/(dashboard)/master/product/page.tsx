@@ -34,7 +34,7 @@ export default function Porduct(){
             console.log('masuk sini');
             router.push('/login');
             return false;
-        }
+        } 
         
         
         if (!response.ok) {

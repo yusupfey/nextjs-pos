@@ -56,7 +56,7 @@ export default function LayoutComponent (props:any) {
     // let headerName= await data;
     const toggleMenu = () => {
         // const val = !isOpen;
-        setOpen(false)
+        setOpen(!isOpen)
         const element = document.getElementById('sidebar');
         isOpen ?
         element?.classList.toggle('w-1/4') // Mengubah lebar antara w-0 dan w-64
