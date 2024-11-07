@@ -21,7 +21,7 @@ export default function CategoryPage(){
   }
 
   async function store(formData: FormData) {
-    let api = process.env.NEXT_PUBLIC_API_URL
+    const api = process.env.NEXT_PUBLIC_API_URL
     // "use server"
     console.log(formData.get('name'));
     try {
@@ -62,9 +62,9 @@ export default function CategoryPage(){
       fetchData();
   },[])
   async function getCategory(){
-    let api = process.env.NEXT_PUBLIC_API_URL
+    const api = process.env.NEXT_PUBLIC_API_URL
 
-      let get = await fetch(`${api}/category`, {
+      const get = await fetch(`${api}/category`, {
         method:'GET',
         headers:{
             'Content-Type':'application/json',
@@ -73,9 +73,9 @@ export default function CategoryPage(){
 
         }
       })
-      let category = await get.json()
+      const category = await get.json()
       console.log(category);
-    let setdata:any = [];
+    const setdata:any = [];
     category.data.forEach((val:any) => {
         setdata.push({'id':val.id,'name':val.name})
     });

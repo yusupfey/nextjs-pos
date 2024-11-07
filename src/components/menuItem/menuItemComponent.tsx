@@ -1,5 +1,4 @@
 import Link from "next/link";
-
 export default function MenuItem (props:any){
     return (
         <div key={props.id}>

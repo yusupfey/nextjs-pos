@@ -30,8 +30,6 @@ const token = getCookie('token');
         })
 
         if(!response.ok) throw new Error('Insert Failed');
-        let data = await response.json()
-
         SubmitForm();
     }
     function onchangeFormSatuan(e:any){

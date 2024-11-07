@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 
 export default function Porduct(){
     const [data, setData] = useState([]);
-    const [isLoading, setLoading] = useState(false);
+    // const [isLoading, setLoading] = useState(false);
 
     const router = useRouter();
     const token = getCookie('token')
@@ -40,7 +40,7 @@ export default function Porduct(){
         if (!response.ok) {
             throw  Error(`HTTP error! status: ${response.status}`)
         }
-        let result = await response.json()
+        const result = await response.json()
         console.log(result);
         setData(result.data)
         

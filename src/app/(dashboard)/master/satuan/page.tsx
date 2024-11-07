@@ -3,12 +3,11 @@ import Title from "@/components/titleComponent/titleComponent";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/DataTableComponent/datatable";
 import { Satuan, columns } from "./columns";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { FaPlus } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { getCookie } from "@/utils/cookie";
 import { Input } from "@/components/ui/input";
-
 
   export default function SatuanPage(){
     const [isOpenForm,SetisOpenForm] = useState(false);
@@ -18,7 +17,6 @@ import { Input } from "@/components/ui/input";
         SetisOpenForm(true)
     }
     async function store(formData: FormData) {
-        let api = process.env.NEXT_PUBLIC_API_URL
         // "use server"
         console.log(formData.get('code'));
         console.log(formData.get('name'));
@@ -26,7 +24,7 @@ import { Input } from "@/components/ui/input";
         try {
             console.log(getCookie('token'));
             
-            const response = await fetch(`${api}/api/createsatuan`,{
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/createsatuan`,{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json',
@@ -51,31 +49,31 @@ import { Input } from "@/components/ui/input";
         }
     }
 
-    async function getData(): Promise<Satuan[]> {
-        // Fetch data from your API here.
-        return [
-          {
-            id: "728ed52f",
-            name: "PCS",
-            uuid_entity: "pending",
-          },
-          {
-            id: "728ed52f",
-            name: "Pack",
-            uuid_entity: "success",
-          },
-          {
-            id: "728ed52f",
-            name: "Lusin",
-            uuid_entity: "pending",
-          },
-          // ...
-        ]
-      }
+    // async function getData(): Promise<Satuan[]> {
+    //     // Fetch data from your API here.
+    //     return [
+    //       {
+    //         id: "728ed52f",
+    //         name: "PCS",
+    //         uuid_entity: "pending",
+    //       },
+    //       {
+    //         id: "728ed52f",
+    //         name: "Pack",
+    //         uuid_entity: "success",
+    //       },
+    //       {
+    //         id: "728ed52f",
+    //         name: "Lusin",
+    //         uuid_entity: "pending",
+    //       },
+    //       // ...
+    //     ]
+    //   }
       async function getSatuan(){
-        let api = process.env.NEXT_PUBLIC_API_URL
+        const api = process.env.NEXT_PUBLIC_API_URL
 
-          let get = await fetch(`${api}/satuan`, {
+          const get = await fetch(`${api}/satuan`, {
             method:'GET',
             headers:{
                 'Content-Type':'application/json',
@@ -84,9 +82,9 @@ import { Input } from "@/components/ui/input";
 
             }
           })
-          let satuan = await get.json()
+          const satuan = await get.json()
         //   console.log(satuan);
-        let setdata:any = [];
+        const setdata:any = [];
         satuan.data.forEach((val:any) => {
             setdata.push({'id':val.id,'name':val.name})
         });
@@ -104,7 +102,7 @@ import { Input } from "@/components/ui/input";
       }
     useEffect(()=>{
         fetchData();
-    },[])
+    },[fetchData])
 
     return (
         <div className="w-full z-0">

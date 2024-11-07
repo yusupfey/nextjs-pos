@@ -1,7 +1,7 @@
 import {PrinterJS} from 'printerjs';
-import {html2canvas} from 'html2canvas';
-import ReceiptTemplate from './templateStruck'
-import React from 'react';
+// import {html2canvas} from 'html2canvas';
+// import ReceiptTemplate from './templateStruck'
+// import React from 'react';
 // local usb
 export const printDocument = () => { 
     PrinterJS.device();

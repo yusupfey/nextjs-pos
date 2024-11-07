@@ -6,20 +6,20 @@ export const getCategories = async (uuid:any) =>{
         const uid = uuid;
         console.log('uuid', uid);
         
-        let response = await fetch(`${url}/category`,{
+        const response = await fetch(`${url}/category`,{
             headers:{
                 'authorization':`Bearer ${token}`
             }
         });
         // if(!response.ok) throw new Error('Insert Failed');
 
-        let res = await response.json()
+        const res = await response.json()
         return res;       
 }
 export const getProducts = async (uuid:any) => {
     const uid = uuid;
     
-    let response = await fetch(`${url}/product/${uid}`,{
+    const response = await fetch(`${url}/product/${uid}`,{
         headers:{
             'authorization':`Bearer ${token}`
         }
@@ -27,7 +27,7 @@ export const getProducts = async (uuid:any) => {
     
     // if(!response.ok) throw new Error('Insert Failed');
 
-    let res = await response.json()
+    const res = await response.json()
     return res;
     
 
@@ -49,14 +49,14 @@ export async function AddCategoryProduct(data:any){
 }
 
 export const getSatuans = async () => {
-    let response = await fetch(`${url}/satuan`,{
+    const response = await fetch(`${url}/satuan`,{
         headers:{
             'authorization':`Bearer ${token}`
         }
     });
     // if(!response.ok) throw new Error('Insert Failed');
 
-    let res = await response.json()
+    const res = await response.json()
     return res;
     
 
@@ -77,8 +77,8 @@ export async function AddSatuanProduct(data:any){
 }
 
 export const getCategoryProducts = async (id_product:any) => {
-    let id=id_product;
-    let response = await fetch(`${url}/category-product/${id}`,{
+    const id=id_product;
+    const response = await fetch(`${url}/category-product/${id}`,{
         headers:{
             'Content-Type':'application/json',
             'authorization':`Bearer ${token}`
@@ -86,14 +86,14 @@ export const getCategoryProducts = async (id_product:any) => {
     });
     // if(!response.ok) throw new Error('Insert Failed');
 
-    let res = await response.json()
+    const res = await response.json()
     return res;
     
 
 }
 export const getSatuanProducts = async (id_product:any) => {
-    let id=id_product;
-    let response = await fetch(`${url}/satuan-product/${id}`,{
+    const id=id_product;
+    const response = await fetch(`${url}/satuan-product/${id}`,{
         headers:{
             'Content-Type':'application/json',
             'authorization':`Bearer ${token}`
@@ -101,7 +101,7 @@ export const getSatuanProducts = async (id_product:any) => {
     });
     // if(!response.ok) throw new Error('Insert Failed');
 
-    let res = await response.json()
+    const res = await response.json()
     return res;
     
 

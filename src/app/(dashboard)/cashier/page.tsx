@@ -8,29 +8,29 @@ import { useEffect, useState } from "react";
 import { FaCartPlus, FaMinus, FaPlus } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 import { getCookie } from "@/utils/cookie";
-import { IsAuth } from "@/utils/isAuth";
+// import { IsAuth } from "@/utils/isAuth";
 import { getPrinterServices, } from "@/utils/bluetooth";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import EscPosEncoder from 'esc-pos-encoder';
 
 
 
-const page: React.FC = ()=>{
-    const [products,setProduct] = useState([]);
-    const [category,setCategory] = useState([]);
-    const [total,setTotal] = useState(0);
-    const [kembalian,setKembalian] = useState(0);
-    const [bayar,setBayar] = useState(0);
-    const [openCart,setOpenCart] = useState(false);
-    const [carts,setCart] = useState([]);
-    const [categoryActive,setCategoryActive] = useState({
+const Page = ()=>{
+    const [Products,setProduct] = useState([]);
+    const [Category,setCategory] = useState([]);
+    const [Total,setTotal] = useState(0);
+    const [Kembalian,setKembalian] = useState(0);
+    const [Bayar,setBayar] = useState(0);
+    const [OpenCart,setOpenCart] = useState(false);
+    const [Carts,setCart] = useState([]);
+    const [CategoryActive,setCategoryActive] = useState({
         'id':''
     });
 
 
     const token = getCookie('token');
     const url = process.env.NEXT_PUBLIC_API_URL;
-    const router = useRouter();
+    // const router = useRouter();
 
     const formatCurrency = (amount:any) => {
         return new Intl.NumberFormat('id-ID', {
@@ -42,9 +42,9 @@ const page: React.FC = ()=>{
         console.log(value);
         setCart((prevCart:any)=> prevCart.map((cart:any)=>{
             if(cart.id==item.id){
-                let totalPeritem = value * item.price
-                let settingTotal =  (value-item.qty)*20000
-                setTotal(total+settingTotal)
+                const totalPeritem = value * item.price
+                const settingTotal =  (value-item.qty)*20000
+                setTotal(Total+settingTotal)
 
                 return {
                     ...cart,
@@ -66,10 +66,10 @@ const page: React.FC = ()=>{
                 if(mode=='plus'){
                     console.log('masuk plush');
 
-                    let qty = item.qty+1;
-                    let totalPeritem = qty*item.price;
+                    const qty = item.qty+1;
+                    const totalPeritem = qty*item.price;
     
-                    setTotal(total+item.price)
+                    setTotal(Total+item.price)
                     console.log({
                         ...cart,
                         qty: qty, // Meningkatkan qty
@@ -82,17 +82,17 @@ const page: React.FC = ()=>{
                         totalItem: totalPeritem, // Meningkatkan qty
                     };
                 }else{
-                    let qty = cart.qty-1;
-                    let totalPeritem = qty*item.price;
+                    const qty = cart.qty-1;
+                    const totalPeritem = qty*item.price;
                     if(qty > 0){
-                        setTotal(total-item.price)
+                        setTotal(Total-item.price)
                         return {
                             ...cart,
                             qty: qty, // Meningkatkan qty
                             totalItem: totalPeritem, // Meningkatkan qty
                         };
                     }else{
-                        setTotal(total-item.price)
+                        setTotal(Total-item.price)
                         deleteCart(item.id)
                     }
                     
@@ -107,21 +107,21 @@ const page: React.FC = ()=>{
         setCart((prevCarts:any)=> prevCarts.filter((val:any)=>val.id !==item))
     }
     function  handleCart(post:any){
-        console.log(carts.length);
-        const found:any = carts.find((element:any) => element.id == post.id);
+        console.log(Carts.length);
+        const found:any = Carts.find((element:any) => element.id == post.id);
       
         
         if(found){
             setCart((prevCarts:any) =>
                 
-                prevCarts.map((cart:any, index:any) => {
+                prevCarts.map((cart:any) => {
                     console.log(prevCarts);
                     
                   if (cart.id === post.id) { // Hanya memperbarui id yang di pilih
-                    let qty = cart.qty+1;
-                    let totalPeritem = qty*post.harga_jual;
+                    const qty = cart.qty+1;
+                    const totalPeritem = qty*post.harga_jual;
 
-                    setTotal(total+post.harga_jual)
+                    setTotal(Total+post.harga_jual)
 
                     return {
                       ...cart,
@@ -136,10 +136,10 @@ const page: React.FC = ()=>{
             
         }else{
                 console.log('masuk sini');
-                const data:any = [...carts,{'id':post.id, qty:1, 'title':post.name, 'price':post.harga_jual, 'totalItem':post.harga_jual}];
+                const data:any = [...Carts,{'id':post.id, qty:1, 'title':post.name, 'price':post.harga_jual, 'totalItem':post.harga_jual}];
                 setCart(data)
 
-                setTotal(total+post.harga_jual)
+                setTotal(Total+post.harga_jual)
 
         }
         
@@ -151,9 +151,9 @@ const page: React.FC = ()=>{
                 'authorization':`Bearer ${token}`
             }
         });
-        IsAuth(response.status, function(res:any){
-            if(res === true) router.push('/login');
-        });
+        // IsAuth(response.status, function(res:any){
+        //     if(res === true) router.push('/login');
+        // });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`)
         }
@@ -161,18 +161,18 @@ const page: React.FC = ()=>{
         setProduct(result.data)
     }
     const getCategory = async () => {
-        let response = await fetch(`${url}/category`,{
+        const response = await fetch(`${url}/category`,{
             headers:{
                 'authorization':`Bearer ${token}`
             }
         });
-        IsAuth(response.status, function(res:any){
-            if(res === true) router.push('/login');
-        });
+        // IsAuth(response.status, function(res:any){
+        //     if(res === true) router.push('/login');
+        // });
         if(!response.ok) throw new Error('Insert Failed');
 
-        let res = await response.json()
-        let data = res.data
+        const res = await response.json()
+        const data = res.data
         
         setCategory(data);
         
@@ -193,9 +193,9 @@ const page: React.FC = ()=>{
                     'authorization':`Bearer ${token}`
                 }
             });
-            IsAuth(response.status, function(res:any){
-                if(res === true) router.push('/login');
-            });
+            // IsAuth(response.status, function(res:any){
+            //     if(res === true) router.push('/login');
+            // });
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`)
             }
@@ -212,11 +212,11 @@ const page: React.FC = ()=>{
                     'authorization':`Bearer ${token}`
                 },
                 method:'post',
-                body:JSON.stringify({'search':e.target.value, 'category':categoryActive.id})
+                body:JSON.stringify({'search':e.target.value, 'category':CategoryActive.id})
             });
-            IsAuth(response.status, function(res:any){
-                if(res === true) router.push('/login');
-            });
+            // IsAuth(response.status, function(res:any){
+            //     if(res === true) router.push('/login');
+            // });
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`)
             }
@@ -236,9 +236,9 @@ const page: React.FC = ()=>{
             method:'post',
             body:JSON.stringify({'barcode':e.target.value})
         });
-        IsAuth(response.status, function(res:any){
-            if(res === true) router.push('/login');
-        });
+        // IsAuth(response.status, function(res:any){
+        //     if(res === true) router.push('/login');
+        // });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`)
         }
@@ -249,7 +249,7 @@ const page: React.FC = ()=>{
         
         if(data.length > 0){
             const post = data[0];
-            const found:any = carts.find((element:any) => element.id == post.id);
+            const found:any = Carts.find((element:any) => element.id == post.id);
           
             
             if(found){
@@ -258,14 +258,14 @@ const page: React.FC = ()=>{
 
                 setCart((prevCarts:any) =>
                     
-                    prevCarts.map((cart:any, index:any) => {
+                    prevCarts.map((cart:any) => {
                         console.log(prevCarts);
                         
                       if (cart.id === post.id) { // Hanya memperbarui id yang di pilih
-                        let qty = cart.qty+1;
-                        let totalPeritem = qty*post.harga_jual;
+                        const qty = cart.qty+1;
+                        const totalPeritem = qty*post.harga_jual;
     
-                        setTotal(total+post.harga_jual)
+                        setTotal(Total+post.harga_jual)
     
                         return {
                           ...cart,
@@ -280,10 +280,10 @@ const page: React.FC = ()=>{
                 
             }else{
                     console.log('masuk sini');
-                    const data:any = [...carts,{'id':post.id, qty:1, 'title':post.name, 'price':post.harga_jual, 'totalItem':post.harga_jual}];
+                    const data:any = [...Carts,{'id':post.id, qty:1, 'title':post.name, 'price':post.harga_jual, 'totalItem':post.harga_jual}];
                     setCart(data)
     
-                    setTotal(total+post.harga_jual)
+                    setTotal(Total+post.harga_jual)
                     // kosongkan textbox barcode
                     e.target.value='';
             }
@@ -307,20 +307,9 @@ const page: React.FC = ()=>{
         const itemWidth = 15; // Lebar kolom item
         const qtyWidth = 3;   // Lebar kolom qty
         const priceWidth = 10; // Lebar kolom price
-        const formatColumn = (text: string, width: number) => {
-            if (text.length <= width) {
-              return text.padEnd(width);
-            } else {
-              // Pembungkus teks jika lebih panjang dari lebar kolom
-              const lines = [];
-              for (let i = 0; i < text.length; i += width) {
-                lines.push(text.substring(i, i + width));
-              }
-              return lines.join('\n'); // Mengembalikan beberapa baris
-            }
-          };
-        var detailRender:any = [];
-        carts.forEach((val:any) => {
+        
+        const detailRender:any = [];
+        Carts.forEach((val:any) => {
             detailRender.push([val.title, `${val.qty}`, `${val.totalItem}`])
         });
         console.log(detailRender);
@@ -366,8 +355,8 @@ const page: React.FC = ()=>{
                 { width: 8, align: 'right' },
             ], 
             [
-                [ 'Bayar', `${bayar}`],
-                [ 'Kembalian', `${kembalian}`],
+                [ 'Bayar', `${Bayar}`],
+                [ 'Kembalian', `${Kembalian}`],
             ]    
         )
         .newline()
@@ -433,7 +422,7 @@ const page: React.FC = ()=>{
     }
     
     const changeBayar = (e:any) => {
-        const hitungKembalian = e.target.value - total;
+        const hitungKembalian = e.target.value - Total;
         console.log(hitungKembalian);
         console.log(e.target.value);
         setBayar(e.target.value)
@@ -442,13 +431,13 @@ const page: React.FC = ()=>{
     const PayOrder = async() => {
     //    e.preventDefault();
         console.log('ini jalan');
-        console.log(carts);
+        console.log(Carts);
         console.log();
         const data = {
-            'total':total,
-            'bayar':bayar,
-            'kembalian':kembalian,
-            'cart':carts
+            'total':Total,
+            'bayar':Bayar,
+            'kembalian':Kembalian,
+            'cart':Carts
         }
         
         const response = await fetch(`${url}/order`,{
@@ -459,9 +448,9 @@ const page: React.FC = ()=>{
             method:'post',
             body:JSON.stringify(data)
         });
-        IsAuth(response.status, function(res:any){
-            if(res === true) router.push('/login');
-        });
+        // IsAuth(response.status, function(res:any){
+        //     if(res === true) router.push('/login');
+        // });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`)
         }
@@ -487,9 +476,9 @@ const page: React.FC = ()=>{
         }
 
         
-    },[])
+    },[fetchData])
 
-    const sortedOrders = carts.sort((a:any, b:any) => b.id - a.id);
+    const sortedOrders = Carts.sort((a:any, b:any) => b.id - a.id);
 
     return (
         <div className="x">
@@ -503,9 +492,9 @@ const page: React.FC = ()=>{
                         <div className="mt-2">
                             <Title weight="font-bold">Category</Title>
                             <div className="overflow-x-auto flex justify-start no-scrollbar mt-[4px]">
-                                <div onClick={changeCategory} className={`text-[12px] text-center m-1 ${categoryActive.id == '' ?'bg-blue-400 text-white hover:bg-blue-700':'text-gray-800 hover:bg-gray-200'} cursor-pointer shadow-sm font-bold rounded-xl py-2 px-4`}>All Items</div>
-                                {category.map((item:any)=>(
-                                    <div onClick={changeCategory} className={`text-[12px] text-center m-1 ${categoryActive.id == item.id ?'bg-blue-400 text-white hover:bg-blue-700':'text-gray-800 hover:bg-gray-200'}  cursor-pointer shadow-sm font-bold rounded-xl py-2 px-4`} id={item.id} key={item.id}>{item.name}</div>
+                                <div onClick={changeCategory} className={`text-[12px] text-center m-1 ${CategoryActive.id == '' ?'bg-blue-400 text-white hover:bg-blue-700':'text-gray-800 hover:bg-gray-200'} cursor-pointer shadow-sm font-bold rounded-xl py-2 px-4`}>All Items</div>
+                                {Category.map((item:any)=>(
+                                    <div onClick={changeCategory} className={`text-[12px] text-center m-1 ${CategoryActive.id == item.id ?'bg-blue-400 text-white hover:bg-blue-700':'text-gray-800 hover:bg-gray-200'}  cursor-pointer shadow-sm font-bold rounded-xl py-2 px-4`} id={item.id} key={item.id}>{item.name}</div>
                                 ))}
                             </div>
                         </div>
@@ -513,7 +502,7 @@ const page: React.FC = ()=>{
                             <Input className="w-full h-14 rounded-[100px] my-6 text-[16px] text-center" onChange={cariBarang} placeholder="Cari Barang"/>
                             <Title weight="font-bold">Product</Title>
                             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
-                                {products.map((post:any)=>(
+                                {Products.map((post:any)=>(
                                     <Card className="z-[1]" key={post.id}>
                                         <CardContent className="scale-100 h-52">
                                             <img src={post.pic} className="w-full h-full object-scale-down"/>
@@ -537,8 +526,8 @@ const page: React.FC = ()=>{
                         </div>
                     </div>
                 </div>
-                <div className={`${openCart ? '':'hidden'} md:block z-[3] absolute md:fixed overflow-hidden w-[95%] md:w-[50%] lg:w-[30%] bg-white p-4 top-16 md:top-0 md:right-0  h-screen rounded-lg shadow-md`}>
-                    <div className={`text-center ${openCart ? '':'hidden'} md:hidden`}>
+                <div className={`${OpenCart ? '':'hidden'} md:block z-[3] absolute md:fixed overflow-hidden w-[95%] md:w-[50%] lg:w-[30%] bg-white p-4 top-16 md:top-0 md:right-0  h-screen rounded-lg shadow-md`}>
+                    <div className={`text-center ${OpenCart ? '':'hidden'} md:hidden`}>
                         <Button variant={'ghost'} className="text-center rounded-full shadow-2xl w-16 h-12 " onClick={()=>setOpenCart(false)}><FaX/></Button>
                     </div>
                     
@@ -580,10 +569,10 @@ const page: React.FC = ()=>{
                     </Card>
                     <div className="flex justify-between my-4">
                         <div className="font-semibold">Total</div>
-                        <div className="font-semibold text-blue-600">{formatCurrency(total)}</div>
+                        <div className="font-semibold text-blue-600">{formatCurrency(Total)}</div>
                     </div>
-                    <Input name="bayar" onChange={changeBayar} value={bayar} placeholder="Bayar" className="my-2 w-full"/>
-                    <Input name="kembalian" value={kembalian} placeholder="Kembalian" className="my-2 w-full"/>
+                    <Input name="bayar" onChange={changeBayar} value={Bayar} placeholder="Bayar" className="my-2 w-full"/>
+                    <Input name="kembalian" value={Kembalian} placeholder="Kembalian" className="my-2 w-full"/>
                     <Button variant={'default'} className="bg-[#2C96F1] w-full font-semibold" onClick={PayOrder}>Bayar</Button>
                     <Button variant={'default'} className="bg-[#2C96F1] w-full font-semibold" onClick={printData}>Connect to printer</Button>
 
@@ -596,4 +585,4 @@ const page: React.FC = ()=>{
         </div>
     )
 }
-export default page;
+export default Page;

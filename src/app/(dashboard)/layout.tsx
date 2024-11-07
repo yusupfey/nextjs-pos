@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 // import { FontAwesomeIcon } from "@fortawesome/fontawesome-svg-core";
-import { FontawesomeObject } from "@fortawesome/fontawesome-svg-core";
-import { FaBars, FaBell, FaList, FaUser } from "react-icons/fa";
+// import { FontawesomeObject } from "@fortawesome/fontawesome-svg-core";
+// import { FaBars, FaBell, FaList, FaUser } from "react-icons/fa";
 
-import Header from "@/components/LayoutComponent/layout";
+// import Header from "@/components/LayoutComponent/layout";
 import LayoutComponent from "@/components/LayoutComponent/layout";
 export const metadata: Metadata = {
   title: "Dashboard",

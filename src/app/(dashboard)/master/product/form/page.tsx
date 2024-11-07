@@ -5,13 +5,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { getCookie } from "@/utils/cookie";
 import { useState } from "react";
-import { FaPlus } from "react-icons/fa";
+// import { FaPlus } from "react-icons/fa";
 import * as yup from "yup";
 
 export default function FormProduct(){
-    const [isButtonAddCategory, setButtonAddCategory] = useState(false)
-    const [isButtonAddSatuan, setButtonAddSatuan] = useState(false)
-    const [isButtonAddProduct, setButtonAddProduct] = useState(false)
+    // const [isButtonAddCategory, setButtonAddCategory] = useState(false)
+    // const [isButtonAddSatuan, setButtonAddSatuan] = useState(false)
+    // const [isButtonAddProduct, setButtonAddProduct] = useState(false)
 
     const [formProduct, setFormProduct] = useState({
         'name':'',
@@ -19,7 +19,7 @@ export default function FormProduct(){
         'deskripsi':''
     })
     const token = getCookie('token')
-    const url = process.env.NEXT_PUBLIC_API_URL!;
+    // const url = process.env.NEXT_PUBLIC_API_URL!;
     const simpleSchema = yup.object().shape({
         name: yup
           .string()
@@ -61,7 +61,7 @@ export default function FormProduct(){
         })
 
             if(!response.ok) throw new Error('Insert Failed');
-            let data = await response.json()
+            // const data = await response.json()
 
             setFormProduct({
                 'name':'',
@@ -69,7 +69,7 @@ export default function FormProduct(){
                 'deskripsi':''
             })
             
-            setButtonAddProduct(false)
+            // setButtonAddProduct(false)
     }
     function onchangeFormProduct(e:any){
         const { name, value } = e.target;

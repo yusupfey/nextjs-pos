@@ -8,12 +8,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { setCookie, getCookie, removeCookie } from '../../utils/cookie';
+import { getCookie } from '../../utils/cookie';
 
 
 export default function Login(){
-    const [Username, SetUsername] = useState('');
-    const [Password, SetPassword] = useState('');
+    // const [Username, SetUsername] = useState('');
+    // const [Password, SetPassword] = useState('');
 
     const [formdata, setFormData] = useState({
         'full_name':'',
@@ -33,7 +33,7 @@ export default function Login(){
         // console.log(Password);
 
         // let url = process.env.NEXT_PUBLIC_API_URL
-        let url = 'http://localhost:4000'
+        const url = 'http://localhost:4000'
         try {
             const response = await fetch(`${url}/auth/register`, {
                 method: 'POST',
@@ -44,7 +44,7 @@ export default function Login(){
             })
             console.log(response);
             if(!response.ok) throw new Error('Login Failed');
-            let data = await response.json()
+            const data = await response.json()
             console.log(data.metadata);
             
             if(data.metadata.code == '201'){
@@ -65,7 +65,7 @@ export default function Login(){
         
     }
     const onChangeFormRegister = (e:any)=>{
-        let {name, value}=e.target;
+        const {name, value}=e.target;
         setFormData({
             ...formdata,
             [name]:value

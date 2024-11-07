@@ -26,7 +26,6 @@ const CategoryForm: React.FC<onsumbitFunction> = ({FormSubmit}) =>{
 
             if(!response.ok) console.log(response.ok);
             
-            let data = await response.json()
             FormSubmit();
     }
     function onchangeFormCategory(e:any){

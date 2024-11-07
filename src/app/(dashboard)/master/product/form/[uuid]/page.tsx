@@ -5,13 +5,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import { FaEdit, FaEye, FaPlus, FaSave, FaTrash } from "react-icons/fa";
+import { FaEdit, FaPlus, FaSave, FaTrash } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 import CategoryForm from "./formCategory";
 import FormSatuan from "./formSatuan";
 import {getCookie} from "../../../../../../utils/cookie";
 import {getCategories, getProducts, AddCategoryProduct, getSatuans, AddSatuanProduct, getSatuanProducts, getCategoryProducts} from "./product";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+
 export default function FormProduct(params:any){
     const [isButtonAddCategory, setButtonAddCategory] = useState(false)
     const [isButtonAddSatuan, setButtonAddSatuan] = useState(false)
@@ -19,7 +20,7 @@ export default function FormProduct(params:any){
     const [isOpenFormSatuanProduct, setOpenFormSatuanProduct] = useState(false)
     const [stockIsExist, SetStockIsExist] = useState(false);
 
-    const [productdata, setProductData] = useState([]);
+    const [productdata, setProductData] = useState<any>();
     const [uuid, setUidProduct] = useState('');
     const [category, setCategory] = useState([]);
     const [categoryproduct, setCategoryProduct] = useState([]);
@@ -41,7 +42,7 @@ export default function FormProduct(params:any){
         'harga_jual':'',
         'harga_beli':'',
     })
-    const router = useRouter();
+    // const router = useRouter();
     const url = process.env.NEXT_PUBLIC_API_URL!;
     const token = getCookie('token');
 
@@ -49,34 +50,34 @@ export default function FormProduct(params:any){
         const uid = uuid;
         console.log('uuid', uid);
         const response = await getCategories(uid);
-       
         setCategory(response.data);
         
         
 
     }
-    const authToken = async (token:any) => {
-        const url = process.env.NEXT_PUBLIC_API_URL!;
     
-        try {
-            const response = await fetch(`${url}/cek-token`,{
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                method:'POST',
-                body:JSON.stringify({'token':token})
-            });
-            console.log(response.status, 'auth');
+    // const authToken = async (token:any) => {
+    //     const url = process.env.NEXT_PUBLIC_API_URL!;
+    
+    //     try {
+    //         const response = await fetch(`${url}/cek-token`,{
+    //             headers:{
+    //                 'Content-Type':'application/json'
+    //             },
+    //             method:'POST',
+    //             body:JSON.stringify({'token':token})
+    //         });
+    //         console.log(response.status, 'auth');
             
-            if (response.status === 401) {
-                router.push('/login')
-            }
-        } catch (error) {
-            console.log(error);
+    //         if (response.status === 401) {
+    //             router.push('/login')
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
             
     
-        }
-    }
+    //     }
+    // }
     
     async function submitProduct(e:any){
         e.preventDefault()
@@ -91,7 +92,7 @@ export default function FormProduct(params:any){
         })
 
             if(!response.ok) throw new Error('Insert Failed');
-            let res = await response.json()
+            // const res = await response.json()
 
             setButtonAddProduct(false)
     }
@@ -104,7 +105,7 @@ export default function FormProduct(params:any){
     const getProduct = async () => {
         
         const uid = params.params.uuid;
-        let res = await getProducts(uid)
+        const res = await getProducts(uid)
         setProductData(res.data);
         
 
@@ -115,15 +116,15 @@ export default function FormProduct(params:any){
         const uid = params.params.uuid;
         console.log('uuid', uid);
         
-        let response = await fetch(`${url}/product-store/${uid}`,{
+        const response = await fetch(`${url}/product-store/${uid}`,{
             headers:{
                 'authorization':`Bearer ${token}`
             }
         });
         if(!response.ok) throw new Error('Insert Failed');
 
-        let res = await response.json()
-        let data = res.data
+        const res = await response.json()
+        const data = res.data
         
         if(data != undefined){
             SetStockIsExist(true)
@@ -141,7 +142,7 @@ export default function FormProduct(params:any){
     }
     
     const getSatuan = async () => {
-        let res = await getSatuans()
+        const res = await getSatuans()
         setSatuan(res.data);
     }
 
@@ -164,14 +165,14 @@ export default function FormProduct(params:any){
     }
     async function handleAddCategoryProduct(e:any){
         e.preventDefault()
-        const data = {'id_category':selectCategory,'id_product':productdata.id}
+        const data = {'id_category':selectCategory,'id_product':productdata ? productdata.id:null}
         AddCategoryProduct(data);
         getCategoryProduct();
     }
     async function handleAddSatuanProduct(e:any){
         e.preventDefault()
 
-        const data ={'id_satuan':selectSatuan,'id_product':productdata.id, 'konversi':konversi}
+        const data ={'id_satuan':selectSatuan,'id_product':productdata? productdata.id:null, 'konversi':konversi}
         AddSatuanProduct(data)
         setkonversi(0)
         setOpenFormSatuanProduct(false)
@@ -181,20 +182,20 @@ export default function FormProduct(params:any){
 
 
     const getCategoryProduct = async () => {
-        let id = productdata.id
+        const id = productdata? productdata.id:null
         console.log('id', id);
         
         
-        let res = await getCategoryProducts(id);
+        const res = await getCategoryProducts(id);
         
         setCategoryProduct(res.data);
         
 
     }
     const getSatuanProduct = async () => {
-        let id = productdata.id
+        const id = productdata? productdata.id:null
         
-        let res = await getSatuanProducts(id);
+        const res = await getSatuanProducts(id);
         
         setSatuanProduct(res.data);
         
@@ -203,6 +204,7 @@ export default function FormProduct(params:any){
 
     useEffect(()=>{
         const uid = params.params.uuid;
+        
         setUidProduct(uid)
         // authToken(token);
 
@@ -227,7 +229,7 @@ export default function FormProduct(params:any){
         // })
         console.log(formStockProduct);
         
-        let response = await fetch(`${url}/product-store`,{
+        const response = await fetch(`${url}/product-store`,{
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -261,15 +263,15 @@ export default function FormProduct(params:any){
                     <form onSubmit={submitProduct} method="post" className="grid grid-cols-3 items-center">
                         <div className="m-2">
                             <Title size="text-[12] font-semibold">UUID</Title>
-                            <Input type="text" name="" value={productdata.uuid} placeholder="Masukan uuid"/>
+                            <Input type="text" name="" value={productdata? productdata.id:null} placeholder="Masukan uuid"/>
                         </div>
                         <div className="m-2">
                             <Title size="text-[12] font-semibold">Name</Title>
-                            <Input type="text" onChange={onchangeFormProduct} value={productdata.name} name="name" placeholder="Masukan product"/>
+                            <Input type="text" onChange={onchangeFormProduct} value={productdata? productdata.name:null} name="name" placeholder="Masukan product"/>
                         </div>
                         <div className="m-2">
                             <Title size="text-[12] font-semibold">Barcode</Title>
-                            <Input type="text" onChange={onchangeFormProduct} name="barcode" value={productdata.barcode} placeholder="Masukan barcode"/>
+                            <Input type="text" onChange={onchangeFormProduct} name="barcode" value={productdata? productdata.barcode:null} placeholder="Masukan barcode"/>
                         </div>
                         <div className="m-2">
                             <Title size="text-[12] font-semibold">Image</Title>

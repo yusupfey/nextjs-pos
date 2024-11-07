@@ -1,11 +1,9 @@
 'use client';
 
-import Link from "next/link";
 import React, { useState } from "react";
-import { FaBars, FaBell, FaList, FaMoneyBill, FaMoneyBillWave, FaProductHunt, FaUser, FaWindows } from "react-icons/fa";
+import { FaBars, FaBell, FaList, FaMoneyBillWave, FaProductHunt, FaUser, FaWindows } from "react-icons/fa";
 import MenuItem from "../menuItem/menuItemComponent";
 import { FaObjectUngroup } from "react-icons/fa6";
-import Title from "../titleComponent/titleComponent";
 
 const data = [
     {
@@ -51,25 +49,14 @@ const data = [
         category:'Transaction'
     },
 ]
-const header = [
-    {
-        id:1,
-        category:'Dashboard'
-    },
-    {
-        id:2,
-        category:'Master'
-    },
-    {   
-        id:3,
-        category:'Transaction'
-    },
-]
+
+
 export default function LayoutComponent (props:any) {
     const [isOpen, setOpen] = useState(false);
     // let headerName= await data;
     const toggleMenu = () => {
-        setOpen(!isOpen)
+        // const val = !isOpen;
+        setOpen(false)
         const element = document.getElementById('sidebar');
         isOpen ?
         element?.classList.toggle('w-1/4') // Mengubah lebar antara w-0 dan w-64

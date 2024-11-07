@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { setCookie, getCookie, removeCookie } from '../../utils/cookie';
+import { setCookie, getCookie } from '../../utils/cookie';
 import Loading from "@/components/Loading/loading";
 import { Button } from "@/components/ui/button";
 import { toast, ToastContainer } from "react-toastify";
@@ -29,7 +29,7 @@ export default function Login(){
         console.log(Username);
         console.log(Password);
         setLoading(true)
-        let url = process.env.NEXT_PUBLIC_API_URL;
+        const url = process.env.NEXT_PUBLIC_API_URL;
         try {
             const response = await fetch(`${url}/auth/login`, {
                 method: 'POST',
@@ -48,7 +48,7 @@ export default function Login(){
                 
                 toast("Hello coders it was easy!");
             };
-            let data = await response.json()
+            const data = await response.json()
             if(data.metadata.code == 200){
                 setCookie('token', data.token, { expires: 1 })
                 setCookie('logged_in', true, { expires: 1 })
@@ -94,7 +94,7 @@ export default function Login(){
                     <Button className="w-full h-[35px] bg-[#2C96F1]" onClick={handleLogin}>Login</Button>
                     }
                     
-                    <Title color=" text-gray-500" weight="font-reguler" size="text-[14px] mt-2">Don't have account ? <Link href="/register" className="text-[#2C96F1]">Sign up</Link></Title>
+                    <Title color=" text-gray-500" weight="font-reguler" size="text-[14px] mt-2">Dont have account ? <Link href="/register" className="text-[#2C96F1]">Sign up</Link></Title>
                 </div>
             </div>
         </div>
