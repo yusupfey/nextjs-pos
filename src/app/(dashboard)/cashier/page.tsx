@@ -1,5 +1,5 @@
 "use client"
-import React from "react";
+import React, { Suspense } from "react";
 import Title from "@/components/titleComponent/titleComponent";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -481,7 +481,7 @@ const page = ()=>{
     const sortedOrders = Carts.sort((a:any, b:any) => b.id - a.id);
 
     return (
-        <div className="x">
+        <Suspense fallback={<>Loading...</>}>
             <div className="flex justify-between">
                 <div className="w-[100%] z-[0]  md:w-[50%] lg:w-[70%]">
                     <div className="h-full">
@@ -582,7 +582,7 @@ const page = ()=>{
                 {/* <Image className="w-full"  src="https://dummyimage.com/500x250" alt="dummy-image" /> */}
                 <button className="cursor-pointer bg-cyan-600 text-white text-center rounded-xl shadow-2xl hover:bg-blue-800 w-full h-12 flex justify-center items-center font-semibold text-[16px]" onClick={()=>setOpenCart(true)}><FaCartPlus/>&nbsp;Checkout</button>
             </div>
-        </div>
+        </Suspense>
     )
 }
 export default page;
