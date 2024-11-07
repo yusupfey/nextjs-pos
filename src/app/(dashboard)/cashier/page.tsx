@@ -9,9 +9,10 @@ import { FaCartPlus, FaMinus, FaPlus } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 import { getCookie } from "@/utils/cookie";
 // import { IsAuth } from "@/utils/isAuth";
-import { getPrinterServices, } from "@/utils/bluetooth";
+// import  {getPrinterServices}  from "@/utils/bluetooth";
 // import { useRouter } from "next/navigation";
 import EscPosEncoder from 'esc-pos-encoder';
+import { getPrinterServices } from "./setting_printer";
 
 
 
@@ -291,6 +292,7 @@ const page = ()=>{
         }
         
     }
+    
     const printData = async(uuid:any) =>{
         const server:any =await getPrinterServices();
         console.log(uuid);
@@ -465,10 +467,7 @@ const page = ()=>{
     }
     useEffect(() => {
         // getPrinterServices()
-        fetchData().catch((e) => {
-        // handle the error as needed
-        console.error('An error occurred while fetching the data: ', e)
-        })
+        fetchData()
         getCategory();
 
         if(localStorage.getItem('BT_Device')){
