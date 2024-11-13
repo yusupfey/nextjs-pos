@@ -306,13 +306,13 @@ const page = ()=>{
         
         const encoder = new EscPosEncoder();
         const lineLength = 32; // Ukuran untuk printer 80mm
-        const itemWidth = 15; // Lebar kolom item
+        const itemWidth = 12; // Lebar kolom item
         const qtyWidth = 3;   // Lebar kolom qty
-        const priceWidth = 10; // Lebar kolom price
+        const priceWidth = 13; // Lebar kolom price
         
         const detailRender:any = [];
         Carts.forEach((val:any) => {
-            detailRender.push([val.title, `${val.qty}`, `${val.totalItem}`])
+            detailRender.push([val.title, `${val.qty}x`, `${formatCurrency(val.totalItem)}`])
         });
         console.log(detailRender);
         // const data = [
@@ -335,7 +335,7 @@ const page = ()=>{
                 { width: 32, align: 'center' },
             ], 
             [
-                [ 'Toko Gocir\n Kp. Nyencle selawangi-bogor'],
+                [ 'Toko Gocir\n Kp. Nyengcle selawangi-bogor'],
             ]    
         )
         .align('left')
@@ -344,7 +344,7 @@ const page = ()=>{
             [
                 { width: itemWidth, marginRight: 2, align: 'left' },
                 { width: qtyWidth, align: 'center' },
-                { width: priceWidth, align: 'right' }
+                { width: priceWidth, align: 'left' }
             ], 
             detailRender  
         )
@@ -353,12 +353,13 @@ const page = ()=>{
         .align('left')
         .table(
             [
-                { width: 24, align: 'right' },
-                { width: 8, align: 'right' },
+                { width: 15, align: 'right' },
+                { width: 17, align: 'right' },
             ], 
             [
-                [ 'Bayar', `${Bayar}`],
-                [ 'Kembalian', `${Kembalian}`],
+                [ 'Total', `${formatCurrency(Total)}`],
+                [ 'Bayar', `${formatCurrency(Bayar)}`],
+                [ 'Kembalian', `${formatCurrency(Kembalian)}`],
             ]    
         )
         .newline()
@@ -484,10 +485,10 @@ const page = ()=>{
             <div className="flex justify-between">
                 <div className="w-[100%] z-[0]  md:w-[50%] lg:w-[70%]">
                     <div className="h-full">
-                        <div className="flex justify-around z-[1]">
+                        {/* <div className="flex justify-around z-[1]">
                             <div className="w-full text-center m-1 bg-blue-400 text-white shadow-sm font-bold rounded-xl p-2">Kasir</div>
                             <div className="w-full text-center m-1 shadow-sm font-bold rounded-xl p-2">Online</div>
-                        </div>
+                        </div> */}
                         <div className="mt-2">
                             <Title weight="font-bold">Category</Title>
                             <div className="overflow-x-auto flex justify-start no-scrollbar mt-[4px]">
@@ -498,28 +499,36 @@ const page = ()=>{
                             </div>
                         </div>
                         <div className="mt-4 md:p-4">
-                            <Input className="w-full h-14 rounded-[100px] my-6 text-[16px] text-center" onChange={cariBarang} placeholder="Cari Barang"/>
+                            <Input className="w-full h-14 rounded-[100px] my-2 text-[16px] text-center" onChange={cariBarang} placeholder="Cari Barang"/>
                             <Title weight="font-bold">Product</Title>
                             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
                                 {Products.map((post:any)=>(
-                                    <Card className="z-[1]" key={post.id}>
-                                        <CardContent className="scale-100 h-52">
-                                            <img src={post.pic} className="w-full h-full object-scale-down"/>
-                                        </CardContent>
-                                        <CardContent>
-                                            <div>
-                                                <div className="font-semibold text-sm text-ellipsis text-nowrap overflow-hidden">
-                                                    {post.name}
+                                    <div className="relative">
+                                        <Card className="z-[1]" key={post.id}>
+                                            <CardContent className="scale-100 h-52">
+                                                <img src={post.pic} className="w-full h-full object-scale-down"/>
+                                            </CardContent>
+                                            <CardContent>
+                                                <div>
+                                                    <div className="font-semibold text-sm text-ellipsis text-nowrap overflow-hidden">
+                                                        {post.name}
+                                                    </div>
+                                                    <div className="font-semibold text-[#2C96F1] text-sm">
+                                                        {formatCurrency(post.harga_jual)}
+                                                    </div>
+                                                    <div className="mt-2">
+                                                        <Button variant={'default'} onClick={()=>handleCart(post)}  className="bg-[#2C96F1] w-full font-semibold">Cart</Button>
+                                                    </div>
                                                 </div>
-                                                <div className="font-semibold text-[#2C96F1] text-sm">
-                                                    {formatCurrency(post.harga_jual)}
-                                                </div>
-                                                <div className="mt-2">
-                                                    <Button variant={'default'} onClick={()=>handleCart(post)}  className="bg-[#2C96F1] w-full font-semibold">Cart</Button>
-                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                        <div className={`absolute top-0 right-0`}>
+                                            {Carts.map((res:any) =>(
+                                               res.id == post.id ? <div className="bg-red-400 text-white rounded-full flex items-center w-8 h-8 justify-center"> {res.qty} </div> : ''
+                                            ))}
                                             </div>
-                                        </CardContent>
-                                    </Card>
+                                    </div>
+                                    
                                 ),[])}
                             </div>
                         </div>
@@ -530,7 +539,7 @@ const page = ()=>{
                         <Button variant={'ghost'} className="text-center rounded-full shadow-2xl w-16 h-12 " onClick={()=>setOpenCart(false)}><FaX/></Button>
                     </div>
                     
-                    <Input placeholder="Barcode" onChange={handleCartBarcode} className="w-full h-14 rounded-[100px] my-6 text-[16px] text-center"/>
+                    <Input placeholder="Barcode" onChange={handleCartBarcode} className="hidden md:block w-full h-14 rounded-[100px] my-6 text-[16px] text-center"/>
                     <div className="font-semibold text-lg my-2">Keranjang</div>
                     <Card className="h-[50%] overflow-auto border-green-500" id="cart-orderx">
                         <CardContent className="p-4">
@@ -570,9 +579,10 @@ const page = ()=>{
                         <div className="font-semibold">Total</div>
                         <div className="font-semibold text-blue-600">{formatCurrency(Total)}</div>
                     </div>
-                    <Input name="bayar" onChange={changeBayar} value={Bayar} placeholder="Bayar" className="my-2 w-full"/>
-                    <Input name="kembalian" value={Kembalian} placeholder="Kembalian" className="my-2 w-full"/>
-                    <Button variant={'default'} className="bg-[#2C96F1] w-full font-semibold" onClick={PayOrder}>Bayar</Button>
+                    <Input name="bayar" onChange={changeBayar} value={Bayar === 0 ? '':Bayar} placeholder="Bayar" className="my-2 w-full"/>
+                
+                    <Input name="kembalian" value={Kembalian === 0 ? '':Kembalian} placeholder="Kembalian" className="my-2 w-full"/>
+                    <Button variant={'default'} className="bg-[#2C96F1] w-full font-semibold mb-2" onClick={PayOrder}>Bayar</Button>
                     <Button variant={'default'} className="bg-[#2C96F1] w-full font-semibold" onClick={printData}>Connect to printer</Button>
 
                 </div>

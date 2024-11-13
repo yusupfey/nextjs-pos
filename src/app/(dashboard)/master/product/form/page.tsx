@@ -5,10 +5,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { getCookie } from "@/utils/cookie";
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+
 // import { FaPlus } from "react-icons/fa";
 import * as yup from "yup";
 
 export default function FormProduct(){
+    const [errors, setErrors] = useState<any>({});
     // const [isButtonAddCategory, setButtonAddCategory] = useState(false)
     // const [isButtonAddSatuan, setButtonAddSatuan] = useState(false)
     // const [isButtonAddProduct, setButtonAddProduct] = useState(false)
@@ -38,12 +41,22 @@ export default function FormProduct(){
         e.preventDefault()
         console.log(formProduct);
         try {
-            await simpleSchema.validate(formProduct);
+            await simpleSchema.validate(formProduct,  { abortEarly: false });
 
             sentProduct()
-            console.log('Validation succeeded:', formProduct);
+            // console.log('Validation succeeded:', formProduct);
           } catch (error:any) {
-            console.error('Validation failed:', error.errors);
+            const errorMessages:any = {};
+            error.errors.forEach((message:any, index:any) => {
+                // Assign message based on the path or index
+                const path = error.inner[index]?.path || index;
+
+                errorMessages[path] = message;
+                setErrors(errorMessages);
+
+            });
+
+            // console.error('Validation failed:', errorMessages);
           }
         
         
@@ -90,14 +103,17 @@ export default function FormProduct(){
                             <div className="m-2">
                                 <Title size="text-[12] font-semibold">Name</Title>
                                 <Input type="text" value={formProduct.name} onChange={onchangeFormProduct} name="name" placeholder="Masukan product"/>
+                                {errors.name && <div className="text-red-400 italic">{errors.name}</div>}
                             </div>
                             <div className="m-2">
                                 <Title size="text-[12] font-semibold">Barcode</Title>
                                 <Input type="text" value={formProduct.barcode} onChange={onchangeFormProduct} name="barcode" placeholder="Masukan barcode"/>
+                                {errors.barcode && <div className="text-red-400 italic">{errors.barcode}</div>}
                             </div>
                             <div className="m-2">
                                 <Title size="text-[12] font-semibold">Deskripsi</Title>
                                 <textarea value={formProduct.deskripsi} onChange={onchangeFormProduct} name="deskripsi" placeholder="Masukan barcode"/>
+                                {errors.deskripsi && <div className="text-red-400 italic">{errors.deskripsi}</div>}
                             </div>
                             <div className="m-2">
                                 <Title size="text-[12] font-semibold">Image</Title>

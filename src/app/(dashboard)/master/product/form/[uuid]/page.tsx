@@ -11,6 +11,7 @@ import CategoryForm from "./formCategory";
 import FormSatuan from "./formSatuan";
 import {getCookie} from "../../../../../../utils/cookie";
 import {getCategories, getProducts, AddCategoryProduct, getSatuans, AddSatuanProduct, getSatuanProducts, getCategoryProducts} from "./product";
+import { ToastContainer } from "react-toastify";
 // import { useRouter } from "next/navigation";
 
 export default function FormProduct(params:any){
@@ -222,14 +223,18 @@ export default function FormProduct(params:any){
 
     async function handleSaveStock(e:any){
         e.preventDefault()
+        
         // add id product
         // setFormStockProduct({
         //     ...formStockProduct,
         //     'uuid_product':uuid
         // })
+        const mode = e.target.getAttribute("data-mode");
+        console.log(mode);
+
         console.log(formStockProduct);
-        
-        const response = await fetch(`${url}/product-store`,{
+        const store = mode == 'Edit' ? 'product-store/edit':'/product-store'
+        const response = await fetch(`${url}/${store}`,{
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -247,9 +252,12 @@ export default function FormProduct(params:any){
             ...formStockProduct,
             [name]:value
         })
+
     }
     return (
         <div className="p-2">
+        <ToastContainer/>
+
             <Title size="text-[30px] font-semibold">Detail Product</Title>
             <Card>
                 <CardContent className="p-2">
@@ -263,7 +271,7 @@ export default function FormProduct(params:any){
                     <form onSubmit={submitProduct} method="post" className="grid grid-cols-3 items-center">
                         <div className="m-2">
                             <Title size="text-[12] font-semibold">UUID</Title>
-                            <Input type="text" name="" value={productdata? productdata.id:null} placeholder="Masukan uuid"/>
+                            <Input type="text" name="" value={productdata? productdata.uuid:null} placeholder="Masukan uuid"/>
                         </div>
                         <div className="m-2">
                             <Title size="text-[12] font-semibold">Name</Title>
@@ -399,11 +407,11 @@ export default function FormProduct(params:any){
                     <Card className="m-2">
                         <CardContent>
                             <Title size="text-[22px] font-semibold my-2">Stock</Title>
-                            <form onSubmit={handleSaveStock}>
+                            <form data-mode={productdata ? 'Edit': 'Simpan'} onSubmit={handleSaveStock}>
                                 <div className="grid grid-cols-3">
                                     <div className="m-2">
                                         <Title size="text-[12] font-semibold">Stock</Title>
-                                        {/* <Input type="text" onChange={changeFormStock} name="id_product" value={uuid} placeholder="Masukan uuid"/> */}
+                                        {/* <Input type="hidden" name="mode" value={productdata ? 'Edit': 'Simpan'} placeholder="Masukan uuid"/> */}
 
                                         <Input onChange={changeFormStock} value={!stockIsExist ? formStockProduct.stock: formStockProduct.stock} name="stock" placeholder="Masukan Stock"/>
                                     </div>
@@ -425,7 +433,7 @@ export default function FormProduct(params:any){
                                     </div>
                                 </div>
                                 <div className="text-end">
-                                    <Button variant={"default"}>Simpan &nbsp; <FaSave/></Button>
+                                    <Button variant={"default"}>{productdata ? 'Edit': 'Simpan'} &nbsp; <FaSave/></Button>
                                 </div>
                             </form>
                         </CardContent>
