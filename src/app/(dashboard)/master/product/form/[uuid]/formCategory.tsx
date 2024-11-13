@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import {getCookie} from "../../../../../../utils/cookie";
+import { toast, ToastContainer } from "react-toastify";
 
 interface onsumbitFunction {
     FormSubmit: ()=> void;
@@ -13,7 +14,13 @@ const CategoryForm: React.FC<onsumbitFunction> = ({FormSubmit}) =>{
     async function handleFormCategory(e:any){
         e.preventDefault()
         console.log(formCategory);
-        
+        if(formCategory.name == ''){
+            console.log('kesini');
+            
+            toast("Isi Category dengan benar");
+
+            return false;
+        }
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/category`, {
             method: 'POST',
             headers:{
@@ -40,6 +47,8 @@ const CategoryForm: React.FC<onsumbitFunction> = ({FormSubmit}) =>{
     })
     
     return (
+        <>
+        {/* <ToastContainer/> */}
         <form onSubmit={handleFormCategory} method="post">
             <div className="m-2">
                 <Title size="text-[12] font-semibold">Category</Title>
@@ -49,6 +58,7 @@ const CategoryForm: React.FC<onsumbitFunction> = ({FormSubmit}) =>{
 
             </div>
         </form>
+        </>
     );
 }
 

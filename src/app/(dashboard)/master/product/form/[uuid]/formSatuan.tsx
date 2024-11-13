@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import {getCookie} from "../../../../../../utils/cookie";
+import { toast } from "react-toastify";
 
 interface CallbackSubmit{
     SubmitForm:()=>void
@@ -18,7 +19,13 @@ const token = getCookie('token');
         
         e.preventDefault()
         console.log(formSatuan);
-        
+        if(formSatuan.name == ''){
+            console.log('kesini');
+            
+            toast("Isi Satuan dengan benar");
+
+            return false;
+        }
         const response = await fetch(`http://localhost:4000/satuan`, {
             method: 'POST',
             headers:{
